@@ -19,26 +19,37 @@ public class EmployeesPanel {
     private JPanel employeesListPanel;
     private JTable employeesTable;
     private JPanel employeeDetailPanel;
-    private JTextField nameField;
-    private JTextField accountField;
-    private JTextField salaryField;
-    private JTextField surnameField;
-    private JTextField dateField;
-    private JComboBox permissionsBox;
-    private JTextField employeeCityField;
-    private JTextField employeeFlatField;
-    private JTextField employeePostcodeField;
-    private JTextField employeeParcelField;
-    private JTextField employeeStreetField;
     private JButton updateButton;
     private JButton deleteButton;
     private JPanel mainPanel;
     private JPanel bottomPanel;
     private JButton addBtn;
-    private JPanel employeesDetailPanel;
-    private JLabel idHeader;
+    private JLabel idLbl;
+    private JLabel id;
+    private JLabel firstNameLbl;
+    private JTextField bankAccountTF;
+    private JLabel lastNameLbl;
+    private JLabel dateOfEmploymentLbl;
+    private JLabel salaryLbl;
+    private JLabel bankAccountLbl;
+    private JTextField salaryTF;
+    private JTextField dateOfEmploymentTF;
+    private JTextField lastNameTF;
+    private JTextField firstNameTF;
+    private JLabel addressTitle;
+    private JLabel cityLbl;
+    private JLabel postcodeLbl;
+    private JLabel streetLbl;
+    private JLabel buildingNumberLbl;
+    private JLabel flatNumberLbl;
+    private JTextField cityTF;
+    private JTextField postcodeTF;
+    private JTextField streetTF;
+    private JTextField buildingNumberTF;
+    private JTextField flatNumberTF;
 
     DataProvider provider;
+    Integer selectedEmployeeID;
  //   EmployeeDetailsPanel detailsPanel;
 
 
@@ -58,7 +69,7 @@ public class EmployeesPanel {
                 if(!selectionModel.isSelectionEmpty())
                 {
                     int row = selectionModel.getMinSelectionIndex();
-             //       getEmployee(row);
+                    getEmployeeDetails(row+1);
 
                 }
             }
@@ -77,6 +88,24 @@ public class EmployeesPanel {
     public JPanel getEmployeeDetailPanel(int id) {
      //  getEmployee(id);
         return employeeDetailPanel;
+    }
+
+    private void getEmployeeDetails(int id)
+    {
+        Employee e = provider.getEmployee(id);
+        selectedEmployeeID = id;
+        this.id.setText(Integer.toString(id));
+        firstNameTF.setText(e.getName());
+        lastNameTF.setText(e.getSurname());
+        bankAccountTF.setText(e.getAccountNumber());
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        dateOfEmploymentTF.setText(dateFormat.format(e.getDateOfEmployment()));
+        salaryTF.setText(e.getSalary().toString());
+        cityTF.setText(e.getCity());
+        postcodeTF.setText(e.getPostcode());
+        streetTF.setText(e.getStreet());
+        buildingNumberTF.setText(e.getParcelNumber().toString());
+        flatNumberTF.setText(e.getFlatNumber().toString());
     }
 
     public JPanel getMainPanel()

@@ -53,7 +53,7 @@ public class DataProvider {
 
             String sql = "select p.ID_PRACOWNIKA, p.imie, p.nazwisko, p.DATA_ZATRUDNIENIA, p.WYNAGRODZENIE, p.NR_KONTA, " +
                     "p.MIEJSCOWOSC, p.KOD_POCZTOWY, p.ULICA, p.NR_BUDYNKU, p.NR_LOKALU, s.ID_STANOWISKO" +
-                    " from PRACOWNICY p, Stanowiska s, Uzytkownicy u where p.ID_PRACOWNIKA = " + (int)(id+1) +" and p.ID_UZYTKOWNIKA = u.ID_UZYTKOWNIKA and u.ID_STANOWISKO = s.ID_STANOWISKO";
+                    " from PRACOWNICY p, Stanowiska s, Uzytkownicy u where p.ID_PRACOWNIKA = " + (int)(id) +" and p.ID_UZYTKOWNIKA = u.ID_UZYTKOWNIKA and u.ID_STANOWISKO = s.ID_STANOWISKO";
             ResultSet resultSet = statement.executeQuery(sql);
             resultSet.next();
 
