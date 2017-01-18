@@ -108,4 +108,8 @@ public class DataProvider {
         }
         return null;
     }
+
+    public Connection getConnection() {
+        return connection;
+    }
 }

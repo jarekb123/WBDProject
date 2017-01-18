@@ -5,12 +5,10 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Date;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import dataModels.*;
-import perspectives.AddEmployeeDialog;
+import dialogs.AddEmployeeDialog;
 
 /**
  * Created by jaroslaw on 15.01.2017.
@@ -47,6 +45,8 @@ public class EmployeesPanel {
     private JTextField streetTF;
     private JTextField buildingNumberTF;
     private JTextField flatNumberTF;
+    private JLabel permissionsLbl;
+    private JComboBox permissionsCBox;
 
     DataProvider provider;
     Integer selectedEmployeeID;
@@ -74,6 +74,7 @@ public class EmployeesPanel {
                 }
             }
         });
+
 
         addBtn.addActionListener(new ActionListener() {
             @Override
@@ -106,11 +107,18 @@ public class EmployeesPanel {
         streetTF.setText(e.getStreet());
         buildingNumberTF.setText(e.getParcelNumber().toString());
         flatNumberTF.setText(e.getFlatNumber().toString());
+
+        permissionsCBox.setSelectedIndex(e.getAuthorityType());
     }
 
     public JPanel getMainPanel()
     {
         return mainPanel;
+    }
+
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
+        permissionsCBox = new JComboBox(provider.getPermissionTypes());
     }
     // Employees section
 
