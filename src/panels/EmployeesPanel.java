@@ -6,6 +6,7 @@ import javax.swing.event.ListSelectionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
+import java.sql.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import dataModels.*;
@@ -84,6 +85,19 @@ public class EmployeesPanel {
                 loadEmployeeTable(provider);
             }
         });
+        deleteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Employee.deleteEmployee(selectedEmployeeID, provider.getConnection());
+                loadEmployeeTable(provider);
+            }
+        });
+        updateButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                updateEmployee(selectedEmployeeID);
+            }
+        });
     }
 
     private void loadEmployeeTable(DataProvider provider) {
@@ -100,13 +114,13 @@ public class EmployeesPanel {
 
     private void getEmployeeDetails(int id)
     {
-        Employee e = provider.getEmployee(id);
+        Employee e = Employee.getEmployee(id, provider.getConnection());
         selectedEmployeeID = id;
         this.id.setText(Integer.toString(id));
         firstNameTF.setText(e.getFirstName());
         lastNameTF.setText(e.getLastName());
         bankAccountTF.setText(e.getBankAccount());
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         dateOfEmploymentTF.setText(dateFormat.format(e.getDateOfEmployment()));
         salaryTF.setText(e.getSalary().toString());
         cityTF.setText(e.getCity());
@@ -117,6 +131,24 @@ public class EmployeesPanel {
 
         int permissionID = User.getByID(e.getUserID(), provider.getConnection()).getPermissionsID();
         permissionsCBox.setSelectedIndex(permissionID-1);
+    }
+    private void updateEmployee(int id)
+    {
+        String firstName = firstNameTF.getText();
+        String lastName = lastNameTF.getText();
+        Date dateOfEmployment = Date.valueOf(dateOfEmploymentTF.getText());
+        Float salary = Float.parseFloat(salaryTF.getText());
+        String bankAcc = bankAccountTF.getText();
+        String city = cityTF.getText();
+        String postoode = postcodeTF.getText();
+        String street = streetTF.getText();
+        Integer buldingNo = Integer.parseInt(buildingNumberTF.getText());
+        Integer flatNo = Integer.parseInt(flatNumberTF.getText());
+        Integer permissionsID = permissionsCBox.getSelectedIndex()+1;
+
+        Employee.updateEmployee(provider.getConnection(), id, firstName,lastName,dateOfEmployment,salary,bankAcc,city,postoode,street,buldingNo,flatNo,permissionsID);
+        loadEmployeeTable(provider);
+
     }
 
     public JPanel getMainPanel()

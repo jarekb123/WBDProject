@@ -88,17 +88,12 @@ public class AddEmployeeDialog extends JDialog {
 
       //  JOptionPane.showMessageDialog(null, "Aby dodać pracownika musisz najpierw dodać jego konto użytkownika", "UWAGA!!!", JOptionPane.INFORMATION_MESSAGE);
 
-        try {
             AddUserDialog addUserDialog = new AddUserDialog(c);
-            c.setAutoCommit(false);
             User user = addUserDialog.showDialog();
             userID = user.getId();
             usernameData.setText(user.getUsername());
             permissionsData.setText(DataProvider.getPermissionType(user.getPermissionsID(), c));
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
 
     }
 
@@ -106,40 +101,18 @@ public class AddEmployeeDialog extends JDialog {
         // add your code here
          Date date = null;
         try {
-            DateFormat dateFormat = new SimpleDateFormat("dd/MM/YYYY");
-            date = dateFormat.parse(dateOfEmploymentTF.getText());
-            dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            String sqlDateStr = dateFormat.format(date);
-
-
-
-            Employee employee = new Employee(0, firstNameTF.getText(), lastNameTF.getText(), java.sql.Date.valueOf(sqlDateStr), Float.parseFloat(salaryTF.getText()), bankAccountTF.getText(), cityTF.getText(), postcodeTF.getText(),
+            Employee employee = new Employee(0, firstNameTF.getText(), lastNameTF.getText(), java.sql.Date.valueOf(dateOfEmploymentTF.getText()), Float.parseFloat(salaryTF.getText()), bankAccountTF.getText(), cityTF.getText(), postcodeTF.getText(),
                     streetTF.getText(), Integer.parseInt(buildingNumberTF.getText()), Integer.parseInt(flatNumberTF.getText()), userID);
             employee.insertToDB(connection);
-            connection.commit();
-            connection.setAutoCommit(true);
         }
         catch (Exception e) {
             e.printStackTrace();
-            try {
-                if(connection!=null)
-                    connection.rollback();
-            }
-            catch (SQLException se)
-            {
-                se.printStackTrace();
-            }
         }
         dispose();
     }
 
     private void onCancel() {
         // add your code here if necessary
-        try {
-            connection.setAutoCommit(true);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
         dispose();
     }
 }

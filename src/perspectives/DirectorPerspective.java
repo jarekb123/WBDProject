@@ -3,6 +3,7 @@ package perspectives;
 import dataModels.DataProvider;
 import panels.CompanyInfo;
 import panels.EmployeesPanel;
+import panels.TicketMachinesPanel;
 
 import javax.swing.*;
 
@@ -14,7 +15,7 @@ public class DirectorPerspective {
     public JPanel mainPanel;
     private JPanel companyInfoPanel;
     private JPanel employeesPanel;
-
+    private JPanel ticketMachinesPanel;
 
     private DataProvider provider;
 
@@ -27,6 +28,9 @@ public class DirectorPerspective {
 
         employeesPanel = new EmployeesPanel(provider).getMainPanel();
         tabbedPane.addTab("Pracownicy", employeesPanel);
+
+        ticketMachinesPanel = new TicketMachinesPanel(provider.getConnection()).getMainPanel();
+        tabbedPane.addTab("Biletomaty", ticketMachinesPanel);
     }
 
 

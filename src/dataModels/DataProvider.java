@@ -14,6 +14,7 @@ public class DataProvider {
             Class.forName("oracle.jdbc.driver.OracleDriver");
 
             connection = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:orcl", "WBD", "wbd123");
+            connection.setAutoCommit(false);
 
         }
         catch (Exception e)
@@ -46,30 +47,7 @@ public class DataProvider {
 
     }
 
-    public Employee getEmployee(int id)
-    {
-        try {
-            Statement statement = connection.createStatement();
 
-            String sql = "select p.ID_PRACOWNIKA, p.imie, p.nazwisko, p.DATA_ZATRUDNIENIA, p.WYNAGRODZENIE, p.NR_KONTA, " +
-                    "p.MIEJSCOWOSC, p.KOD_POCZTOWY, p.ULICA, p.NR_BUDYNKU, p.NR_LOKALU, p.ID_UZYTKOWNIKA" +
-                    " from PRACOWNICY p, Stanowiska s, Uzytkownicy u where p.ID_PRACOWNIKA = " + (int)(id) +" and p.ID_UZYTKOWNIKA = u.ID_UZYTKOWNIKA and u.ID_STANOWISKO = s.ID_STANOWISKO";
-            ResultSet resultSet = statement.executeQuery(sql);
-            resultSet.next();
-
-            Employee employee = new Employee(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getDate(4),
-                    resultSet.getFloat(5), resultSet.getString(6), resultSet.getString(7), resultSet.getString(8),
-                    resultSet.getString(9), resultSet.getInt(10), resultSet.getInt(11), resultSet.getInt(12));
-
-            return employee;
-
-        }
-        catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
-    return null;
-    }
     public static String[] getPermissionTypes(Connection c) {
         try {
             Statement statement = c.createStatement();
