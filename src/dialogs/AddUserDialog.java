@@ -1,6 +1,7 @@
 package dialogs;
 
 import dataModels.DataProvider;
+import dataModels.User;
 
 import javax.swing.*;
 import java.awt.event.*;
@@ -19,12 +20,11 @@ public class AddUserDialog extends JDialog {
     private JComboBox permissionCBox;
     private JLabel permissionsLbl;
 
-    String username;
-    int pkmID = 1;
-    DataProvider dataProvider;
+    User user;
+    Connection dbConnection;
 
-    public AddUserDialog(DataProvider dataProvider) {
-        this.dataProvider = dataProvider;
+    public AddUserDialog(Connection c) {
+        this.dbConnection = c;
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
@@ -61,36 +61,42 @@ public class AddUserDialog extends JDialog {
 
     private void onOK() {
         // add your code here
-        try {
-            Connection c = dataProvider.getConnection();
-            String password = passwordTF.getPassword().toString();
-            username = usernameTF.getText();
-            int permissionsID = permissionCBox.getSelectedIndex();
-            PreparedStatement statement = c.prepareStatement("INSERT INTO uzytkownicy (seq_uzytkownicy.nextval, '?', '?', ?, ?)");
-            statement.setString(1, username);
-            statement.setString(2, password);
-            statement.setInt(3,pkmID);
-            statement.setInt(4, permissionsID);
-            statement.execute();
+            String password = String.copyValueOf(passwordTF.getPassword());
+            String username = usernameTF.getText();
+            int permissionsID = permissionCBox.getSelectedIndex()+1;
+            int pkmID = 1;
+
+            User user = new User(username, password, permissionsID, pkmID);
+            try {
+                this.user = user.insertToDB(dbConnection);
+            } catch (SQLException e) {
+                try {
+                    if(dbConnection!=null)
+                    {
+                        dbConnection.rollback();
+                    }
+                } catch (SQLException se) {
+                    se.printStackTrace();
+                }
+            }
+
+
             dispose();
-        } catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
+
     }
 
     private void onCancel() {
         // add your code here if necessary
         dispose();
     }
-    public String showDialog()
+    public User showDialog()
     {
         setVisible(true);
-        return username;
+        return user;
     }
 
     private void createUIComponents() {
         // TODO: place custom component creation code here
-        permissionCBox = new JComboBox(dataProvider.getPermissionTypes());
+        permissionCBox = new JComboBox(DataProvider.getPermissionTypes(dbConnection));
     }
 }

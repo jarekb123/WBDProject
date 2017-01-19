@@ -1,11 +1,17 @@
 package dialogs;
 
 import dataModels.DataProvider;
+import dataModels.Employee;
+import dataModels.User;
 import panels.EmployeesPanel;
 
 import javax.swing.*;
 import java.awt.event.*;
+import java.sql.Connection;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class AddEmployeeDialog extends JDialog {
     private JPanel contentPane;
@@ -13,16 +19,6 @@ public class AddEmployeeDialog extends JDialog {
     private JButton buttonCancel;
     private JPanel mainPanel;
     private JPanel employeeDetailPanel;
-    private JLabel firstNameLbl;
-    private JLabel bankAccountLbl;
-    private JLabel salaryLbl;
-    private JLabel dateOfEmploymentLbl;
-    private JLabel lastNameLbl;
-    private JTextField bankAccountTF;
-    private JTextField dateOfEmploymentTF;
-    private JTextField lastNameTF;
-    private JTextField firstNameTF;
-    private JTextField salaryTF;
     private JLabel addressTitle;
     private JLabel cityLbl;
     private JLabel flatNumberLbl;
@@ -34,13 +30,34 @@ public class AddEmployeeDialog extends JDialog {
     private JTextField buildingNumberTF;
     private JTextField streetTF;
     private JTextField postcodeTF;
+    private JLabel firstNameLbl;
+    private JLabel bankAccountLbl;
+    private JLabel salaryLbl;
+    private JLabel dateOfEmploymentLbl;
+    private JLabel lastNameLbl;
+    private JTextField bankAccountTF;
+    private JTextField dateOfEmploymentTF;
+    private JTextField lastNameTF;
+    private JTextField firstNameTF;
+    private JTextField salaryTF;
+    private JLabel personalDataLbl;
+    private JLabel usernameLbl;
+    private JLabel permissionsLbl;
+    private JLabel usernameData;
+    private JLabel permissionsData;
+    private JLabel userDataLbl;
 
-    public AddEmployeeDialog(DataProvider provider) {
+    private  int userID;
+    private Connection connection;
+
+    public AddEmployeeDialog(Connection c) {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
         setTitle("Dodaj nowego pracownika");
         pack();
+
+        this.connection = c;
 
         buttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -72,9 +89,12 @@ public class AddEmployeeDialog extends JDialog {
       //  JOptionPane.showMessageDialog(null, "Aby dodać pracownika musisz najpierw dodać jego konto użytkownika", "UWAGA!!!", JOptionPane.INFORMATION_MESSAGE);
 
         try {
-            AddUserDialog addUserDialog = new AddUserDialog(provider);
-            provider.getConnection().setAutoCommit(false);
-            String userID = addUserDialog.showDialog();
+            AddUserDialog addUserDialog = new AddUserDialog(c);
+            c.setAutoCommit(false);
+            User user = addUserDialog.showDialog();
+            userID = user.getId();
+            usernameData.setText(user.getUsername());
+            permissionsData.setText(DataProvider.getPermissionType(user.getPermissionsID(), c));
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -84,11 +104,42 @@ public class AddEmployeeDialog extends JDialog {
 
     private void onOK() {
         // add your code here
+         Date date = null;
+        try {
+            DateFormat dateFormat = new SimpleDateFormat("dd/MM/YYYY");
+            date = dateFormat.parse(dateOfEmploymentTF.getText());
+            dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            String sqlDateStr = dateFormat.format(date);
+
+
+
+            Employee employee = new Employee(0, firstNameTF.getText(), lastNameTF.getText(), java.sql.Date.valueOf(sqlDateStr), Float.parseFloat(salaryTF.getText()), bankAccountTF.getText(), cityTF.getText(), postcodeTF.getText(),
+                    streetTF.getText(), Integer.parseInt(buildingNumberTF.getText()), Integer.parseInt(flatNumberTF.getText()), userID);
+            employee.insertToDB(connection);
+            connection.commit();
+            connection.setAutoCommit(true);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            try {
+                if(connection!=null)
+                    connection.rollback();
+            }
+            catch (SQLException se)
+            {
+                se.printStackTrace();
+            }
+        }
         dispose();
     }
 
     private void onCancel() {
         // add your code here if necessary
+        try {
+            connection.setAutoCommit(true);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         dispose();
     }
 }

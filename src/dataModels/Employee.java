@@ -1,5 +1,9 @@
 package dataModels;
 
+import java.sql.Connection;
+
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.sql.Date;
 
 /**
@@ -7,43 +11,43 @@ import java.sql.Date;
  */
 public class Employee {
     private Integer id;
-    private String name;
-    private String surname;
+    private String firstName;
+    private String lastName;
     private Date dateOfEmployment;
     private Float salary;
-    private String accountNumber;
+    private String bankAccount;
     private String city;
     private String postcode;
     private String street;
-    private Integer parcelNumber;
+    private Integer buildingNumber;
     private Integer flatNumber;
-    private Integer authorityType;
+    private Integer userID;
 
-    public Employee(int id, String name, String surname, Date dateOfEmployment, float salary, String accountNumber, String city, String postcode, String street, int parcelNumber, int flatNumber, int authorityType) {
+    public Employee(int id, String firstName, String lastName, Date dateOfEmployment, float salary, String bankAccount, String city, String postcode, String street, int buildingNumber, int flatNumber, int userID) {
         this.id = id;
-        this.name = name;
-        this.surname = surname;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.dateOfEmployment = dateOfEmployment;
         this.salary = salary;
-        this.accountNumber = accountNumber;
+        this.bankAccount = bankAccount;
         this.city = city;
         this.postcode = postcode;
         this.street = street;
-        this.parcelNumber = parcelNumber;
+        this.buildingNumber = buildingNumber;
         this.flatNumber = flatNumber;
-        this.authorityType = authorityType;
+        this.userID = userID;
     }
 
     public Integer getId() {
         return id;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public String getSurname() {
-        return surname;
+    public String getLastName() {
+        return lastName;
     }
 
     public Date getDateOfEmployment() {
@@ -54,24 +58,24 @@ public class Employee {
         return salary;
     }
 
-    public String getAccountNumber() {
-        return accountNumber;
+    public String getBankAccount() {
+        return bankAccount;
     }
 
     public String getCity() {
         return city;
     }
 
-    public Integer getParcelNumber() {
-        return parcelNumber;
+    public Integer getBuildingNumber() {
+        return buildingNumber;
     }
 
     public Integer getFlatNumber() {
         return flatNumber;
     }
 
-    public Integer getAuthorityType() {
-        return authorityType;
+    public Integer getUserID() {
+        return userID;
     }
 
     public String getPostcode() {
@@ -80,5 +84,26 @@ public class Employee {
 
     public String getStreet() {
         return street;
+    }
+
+    public Employee insertToDB(Connection c) throws SQLException {
+            PreparedStatement ps = c.prepareStatement("insert into pracownicy values (seq_pracownicy.nextval, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            ps.setString(1, firstName);
+            ps.setString(2, lastName);
+            ps.setDate(3, dateOfEmployment);
+            ps.setFloat(4, salary);
+            ps.setString(5, bankAccount);
+            ps.setString(6,city);
+            ps.setString(7, postcode);
+            ps.setString(8, street);
+            ps.setInt(9, buildingNumber);
+            ps.setInt(10,flatNumber);
+            ps.setInt(11,1);
+            ps.setInt(12, userID);
+
+            ps.execute();
+            ps.close();
+
+            return this;
     }
 }

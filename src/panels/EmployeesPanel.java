@@ -5,6 +5,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import dataModels.*;
@@ -49,6 +50,7 @@ public class EmployeesPanel {
     private JComboBox permissionsCBox;
 
     DataProvider provider;
+
     Integer selectedEmployeeID;
  //   EmployeeDetailsPanel detailsPanel;
 
@@ -58,9 +60,7 @@ public class EmployeesPanel {
         this.provider = provider;
      //   detailsPanel = new EmployeeDetailsPanel(provider);
 
-        EmployeesTableModel employeesTableModel = new EmployeesTableModel();
-        employeesTableModel.getDataFromDataProvider(provider);
-        employeesTable.setModel(employeesTableModel);
+        loadEmployeeTable(provider);
 
         ListSelectionModel selectionModel = employeesTable.getSelectionModel();
         selectionModel.addListSelectionListener(new ListSelectionListener() {
@@ -69,7 +69,7 @@ public class EmployeesPanel {
                 if(!selectionModel.isSelectionEmpty())
                 {
                     int row = selectionModel.getMinSelectionIndex();
-                    getEmployeeDetails(row+1);
+                    getEmployeeDetails((int)employeesTable.getValueAt(row, 0));
 
                 }
             }
@@ -79,10 +79,17 @@ public class EmployeesPanel {
         addBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JDialog addDialog = new AddEmployeeDialog(provider);
+                JDialog addDialog = new AddEmployeeDialog(provider.getConnection());
                 addDialog.setVisible(true);
+                loadEmployeeTable(provider);
             }
         });
+    }
+
+    private void loadEmployeeTable(DataProvider provider) {
+        EmployeesTableModel employeesTableModel = new EmployeesTableModel();
+        employeesTableModel.getDataFromDataProvider(provider);
+        employeesTable.setModel(employeesTableModel);
     }
 
 
@@ -96,19 +103,20 @@ public class EmployeesPanel {
         Employee e = provider.getEmployee(id);
         selectedEmployeeID = id;
         this.id.setText(Integer.toString(id));
-        firstNameTF.setText(e.getName());
-        lastNameTF.setText(e.getSurname());
-        bankAccountTF.setText(e.getAccountNumber());
+        firstNameTF.setText(e.getFirstName());
+        lastNameTF.setText(e.getLastName());
+        bankAccountTF.setText(e.getBankAccount());
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         dateOfEmploymentTF.setText(dateFormat.format(e.getDateOfEmployment()));
         salaryTF.setText(e.getSalary().toString());
         cityTF.setText(e.getCity());
         postcodeTF.setText(e.getPostcode());
         streetTF.setText(e.getStreet());
-        buildingNumberTF.setText(e.getParcelNumber().toString());
+        buildingNumberTF.setText(e.getBuildingNumber().toString());
         flatNumberTF.setText(e.getFlatNumber().toString());
 
-        permissionsCBox.setSelectedIndex(e.getAuthorityType());
+        int permissionID = User.getByID(e.getUserID(), provider.getConnection()).getPermissionsID();
+        permissionsCBox.setSelectedIndex(permissionID-1);
     }
 
     public JPanel getMainPanel()
@@ -118,7 +126,7 @@ public class EmployeesPanel {
 
     private void createUIComponents() {
         // TODO: place custom component creation code here
-        permissionsCBox = new JComboBox(provider.getPermissionTypes());
+        permissionsCBox = new JComboBox(provider.getPermissionTypes(provider.getConnection()));
     }
     // Employees section
 
