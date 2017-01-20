@@ -1,5 +1,6 @@
 package panels;
 
+import dataModels.BusStop;
 import dataModels.TicketMachine;
 import dataModels.TicketMachinesTableModel;
 
@@ -27,7 +28,7 @@ public class TicketMachinesPanel {
     private JLabel a3Label;
     private JLabel a4Label;
     private JLabel a5Label;
-    private JLabel idLabel;
+    private JLabel id2;
     private JLabel b1Label;
     private JLabel b2Label;
     private JLabel b3Label;
@@ -72,6 +73,31 @@ public class TicketMachinesPanel {
             if(tm.getState())
                 stateON.setSelected(true);
             else stateOFF.setSelected(true);
+
+            if(tm.getIdBusStop() != 0)
+                getBusStopDetails(tm.getIdBusStop());
+
+        } catch (SQLException s) {
+            s.printStackTrace();
+        }
+    }
+
+    private void getBusStopDetails(int id) {
+        try {
+            // GUI setup
+            a1Label.setText("Nazwa:");
+            a2Label.setText("Miejscowość: ");
+            a3Label.setText("Kod pocztowy: ");
+            a4Label.setText("Ulica: ");
+            a5Label.setText("Nr budynku: ");
+
+            BusStop busStop = BusStop.get(c, id);
+            id2.setText(busStop.getId().toString());
+            b1Label.setText(busStop.getName());
+            b2Label.setText(busStop.getCity());
+            b3Label.setText(busStop.getPostcode());
+            b4Label.setText(busStop.getStreet());
+            b5Label.setText(busStop.getBuildingNumber().toString());
         } catch (SQLException s) {
             s.printStackTrace();
         }

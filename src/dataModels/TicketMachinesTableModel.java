@@ -3,7 +3,6 @@ package dataModels;
 import javax.swing.table.AbstractTableModel;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 /**
  * Created by jaroslaw on 19.01.2017.
@@ -50,7 +49,7 @@ public class TicketMachinesTableModel extends AbstractTableModel {
                     return "ON";
                 } else return "OFF";
             case 4:
-                if(data[rowIndex].getIdStop() != 0)
+                if(data[rowIndex].getIdBusStop() != 0)
                     return "TAK";
                 else return "NIE";
             case 5:

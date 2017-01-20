@@ -14,15 +14,15 @@ public class TicketMachine {
     private String manufacturer, serialNo;
     private boolean state;
     private Integer idVehicle;
-    private Integer idStop;
+    private Integer idBusStop;
 
-    public TicketMachine(Integer id, String manufacturer, String serialNo, boolean state, Integer idVehicle, Integer idStop) {
+    public TicketMachine(Integer id, String manufacturer, String serialNo, boolean state, Integer idVehicle, Integer idBusStop) {
         this.id = id;
         this.manufacturer = manufacturer;
         this.serialNo = serialNo;
         this.state = state;
         this.idVehicle = idVehicle;
-        this.idStop = idStop;
+        this.idBusStop = idBusStop;
     }
 
     public Integer getId() {
@@ -45,8 +45,8 @@ public class TicketMachine {
         return idVehicle;
     }
 
-    public Integer getIdStop() {
-        return idStop;
+    public Integer getIdBusStop() {
+        return idBusStop;
     }
 
     public static TicketMachine[] getAllFromDB(Connection c, Integer idPKM) throws SQLException {
