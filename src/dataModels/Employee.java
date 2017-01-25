@@ -153,8 +153,8 @@ public class Employee {
             return false;
         }
     }
-    public static boolean updateEmployee(Connection c, int id, String firstName, String lastName, Date dateOfEmployment, Float salary, String bankAccount, String city, String postcode, String street, Integer buildingNumber, Integer flatNumber, Integer permissionsID) {
-        try {
+    public static boolean updateEmployee(Connection c, int id, String firstName, String lastName, Date dateOfEmployment, Float salary, String bankAccount, String city, String postcode, String street, Integer buildingNumber, Integer flatNumber, Integer permissionsID) throws SQLException {
+
             Savepoint svpt = c.setSavepoint("svptUpdateEmployee");
             PreparedStatement ps = c.prepareStatement("update PRACOWNICY set imie=?, nazwisko=?, data_zatrudnienia=?, wynagrodzenie=?, nr_konta=?, miejscowosc=?, kod_pocztowy=?, ulica=?, nr_budynku=?, nr_lokalu=? where id_pracownika="+id);
             ps.setString(1, firstName);
@@ -183,10 +183,5 @@ public class Employee {
                     return false;
                 }
             } else return false;
-        } catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
-        return false;
     }
 }

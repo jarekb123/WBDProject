@@ -1,5 +1,7 @@
 import dataModels.DataProvider;
+import dialogs.AddClientDialog;
 import perspectives.DirectorPerspective;
+import perspectives.LoginForm;
 
 import javax.swing.*;
 
@@ -24,9 +26,14 @@ public class Main {
         DataProvider dataProvider = new DataProvider();
 
         JFrame frame = new JFrame("Przedsiębiorstwo KM");
-        frame.setContentPane(new DirectorPerspective(dataProvider).mainPanel);
+        frame.setContentPane(new LoginForm(dataProvider, frame).mainPanel);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
+        frame.setResizable(false);
+//
+//        AddClientDialog addClientDialog = new AddClientDialog(dataProvider.getConnection());
+//        addClientDialog.pack();
+//        addClientDialog.setVisible(true);
     }
 }

@@ -8,20 +8,18 @@ import java.sql.*;
  */
 public class User {
     int id;
-    String username, password;
+    String username;
     int permissionsID, pkmID;
 
-    public User(int id, String username, String password, int permissionsID, int pkmID) {
+    public User(int id, String username,  int permissionsID, int pkmID) {
         this.username = username;
-        this.password = password;
         this.id = id;
         this.permissionsID = permissionsID;
         this.pkmID = pkmID;
     }
 
-    public User(String username, String password, int permissionsID, int pkmID) {
+    public User(String username, int permissionsID, int pkmID) {
         this.username = username;
-        this.password = password;
         this.permissionsID = permissionsID;
         this.pkmID = pkmID;
     }
@@ -43,7 +41,7 @@ public class User {
      * @param c Polaczenie z baza danych
      * @return Zwraca instancje nowego uzytkownika
      */
-    public User insertToDB(Connection c) throws SQLException {
+    public static User insertToDB(Connection c, String username, String password, int pkmID, int permissionsID) throws SQLException {
 
             Statement s = c.createStatement();
             ResultSet rs = s.executeQuery("select seq_uzytkownicy.nextval from dual");
@@ -59,11 +57,9 @@ public class User {
             ps.setInt(4, pkmID);
             ps.setInt(5, permissionsID);
 
-            ps.execute();
+            ps.executeUpdate();
             ps.close();
-
-            this.id = id;
-            return this;
+            return new User(id, username, permissionsID, pkmID);
     }
 
     /**
@@ -79,16 +75,31 @@ public class User {
             ResultSet rs = s.executeQuery("select * from uzytkownicy where id_uzytkownika = "+id);
             rs.next();
             String username = rs.getString("nazwa_uzytkownika");
-            String password = rs.getString("haslo");
+          //  String password = rs.getString("haslo");
             int pkmID = rs.getInt("id_pkm");
             int permissionsID = rs.getInt("id_stanowisko");
 
-            return new User(id, username, password, permissionsID, pkmID);
+            return new User(id, username, permissionsID, pkmID);
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
         return null;
+    }
+    public static User login(Connection c, String username, String password) throws SQLException {
+        PreparedStatement ps = c.prepareStatement("select id_uzytkownika, nazwa_uzytkownika, id_stanowisko, id_PKM from uzytkownicy WHERE nazwa_uzytkownika = ? and haslo = ?");
+        ps.setString(1, username);
+        ps.setString(2, password);
+        ResultSet rs = ps.executeQuery();
+        if(rs.next())
+            return new User(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getInt(4));
+        return null;
+    }
+    public String getPermissionName(Connection c) throws SQLException {
+        Statement s = c.createStatement();
+        ResultSet rs = s.executeQuery("select s.nazwa from Stanowiska s, Uzytkownicy u where u.id_stanowisko = s.id_stanowisko and u.id_uzytkownika = "+id);
+        rs.next();
+        return rs.getString(1);
     }
 }

@@ -134,21 +134,26 @@ public class EmployeesPanel {
     }
     private void updateEmployee(int id)
     {
-        String firstName = firstNameTF.getText();
-        String lastName = lastNameTF.getText();
-        Date dateOfEmployment = Date.valueOf(dateOfEmploymentTF.getText());
-        Float salary = Float.parseFloat(salaryTF.getText());
-        String bankAcc = bankAccountTF.getText();
-        String city = cityTF.getText();
-        String postoode = postcodeTF.getText();
-        String street = streetTF.getText();
-        Integer buldingNo = Integer.parseInt(buildingNumberTF.getText());
-        Integer flatNo = Integer.parseInt(flatNumberTF.getText());
-        Integer permissionsID = permissionsCBox.getSelectedIndex()+1;
+        try {
+            String firstName = firstNameTF.getText();
+            String lastName = lastNameTF.getText();
+            Date dateOfEmployment = Date.valueOf(dateOfEmploymentTF.getText());
+            Float salary = Float.parseFloat(salaryTF.getText());
+            String bankAcc = bankAccountTF.getText();
+            String city = cityTF.getText();
+            String postoode = postcodeTF.getText();
+            String street = streetTF.getText();
+            Integer buldingNo = Integer.parseInt(buildingNumberTF.getText());
+            Integer flatNo = Integer.parseInt(flatNumberTF.getText());
+            Integer permissionsID = permissionsCBox.getSelectedIndex() + 1;
 
-        Employee.updateEmployee(provider.getConnection(), id, firstName,lastName,dateOfEmployment,salary,bankAcc,city,postoode,street,buldingNo,flatNo,permissionsID);
-        loadEmployeeTable(provider);
-
+            Employee.updateEmployee(provider.getConnection(), id, firstName, lastName, dateOfEmployment, salary, bankAcc, city, postoode, street, buldingNo, flatNo, permissionsID);
+            JOptionPane.showMessageDialog(null, "Aktualizacja danych została wykonana poprawnie!", "OK!", JOptionPane.INFORMATION_MESSAGE);
+            loadEmployeeTable(provider);
+        }
+        catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Aktualizacja danych NIE została wykonana poprawnie!", "Błąd!", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     public JPanel getMainPanel()

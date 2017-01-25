@@ -65,10 +65,8 @@ public class AddUserDialog extends JDialog {
             String username = usernameTF.getText();
             int permissionsID = permissionCBox.getSelectedIndex()+1;
             int pkmID = 1;
-
-            User user = new User(username, password, permissionsID, pkmID);
             try {
-                this.user = user.insertToDB(dbConnection);
+                this.user = User.insertToDB(dbConnection, username, password, pkmID, permissionsID);
             } catch (SQLException e) {
                 try {
                     if(dbConnection!=null)
