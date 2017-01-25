@@ -25,7 +25,7 @@ public class ClientPerspective {
     private JLabel ticketID;
     private JButton logoutButton;
 
-    JFrame parent;
+    private JFrame parent;
 
     public ClientPerspective(Client client, JFrame parent)
     {

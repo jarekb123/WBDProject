@@ -26,8 +26,8 @@ public class LoginForm {
     public JPanel mainPanel;
     private JPanel southPanel;
 
-    DataProvider dp;
-    JFrame parent;
+    private DataProvider dp;
+    private JFrame parent;
 
     public LoginForm(DataProvider dp, JFrame parent)
     {

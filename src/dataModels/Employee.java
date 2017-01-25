@@ -120,11 +120,9 @@ public class Employee {
             ResultSet resultSet = statement.executeQuery(sql);
             resultSet.next();
 
-            Employee employee = new Employee(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getDate(4),
+            return new Employee(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getDate(4),
                     resultSet.getFloat(5), resultSet.getString(6), resultSet.getString(7), resultSet.getString(8),
                     resultSet.getString(9), resultSet.getInt(10), resultSet.getInt(11), resultSet.getInt(12));
-
-            return employee;
 
         }
         catch (SQLException e)

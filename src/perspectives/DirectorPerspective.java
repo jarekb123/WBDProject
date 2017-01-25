@@ -15,28 +15,22 @@ import javax.swing.*;
 public class DirectorPerspective {
     private JTabbedPane tabbedPane;
     public JPanel mainPanel;
-    private JPanel companyInfoPanel;
-    private JPanel employeesPanel;
-    private JPanel ticketMachinesPanel;
-    private JPanel vehiclesPanel;
 
-    private DataProvider provider;
-    private User user;
     public DirectorPerspective(DataProvider provider, User user)
     {
-        this.provider = provider;
-        this.user = user;
+        DataProvider provider1 = provider;
+        User user1 = user;
 
-        companyInfoPanel = new CompanyInfo(provider).getMainPanel();
-        tabbedPane.addTab("Dane przedsiębiorstwa",companyInfoPanel);
+        JPanel companyInfoPanel = new CompanyInfo(provider).getMainPanel();
+        tabbedPane.addTab("Dane przedsiębiorstwa", companyInfoPanel);
 
-        employeesPanel = new EmployeesPanel(provider).getMainPanel();
+        JPanel employeesPanel = new EmployeesPanel(provider).getMainPanel();
         tabbedPane.addTab("Pracownicy", employeesPanel);
 
-        ticketMachinesPanel = new TicketMachinesPanel(provider.getConnection()).getMainPanel();
+        JPanel ticketMachinesPanel = new TicketMachinesPanel(provider.getConnection()).getMainPanel();
         tabbedPane.addTab("Biletomaty", ticketMachinesPanel);
 
-        vehiclesPanel = new VehiclesPanel(provider.getConnection(), 1, false).getMainPanel();
+        JPanel vehiclesPanel = new VehiclesPanel(provider.getConnection(), 1, false).getMainPanel();
         tabbedPane.addTab("Pojazdy", vehiclesPanel);
 
     }

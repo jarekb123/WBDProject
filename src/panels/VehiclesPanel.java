@@ -38,8 +38,8 @@ public class VehiclesPanel {
     private JLabel seatsData;
     private JLabel vehicleTypeData;
 
-    Connection c;
-    int idPKN;
+    private Connection c;
+    private int idPKN;
 
     public VehiclesPanel(Connection c, int idPKM, boolean editable) {
         this.c = c;
@@ -67,7 +67,7 @@ public class VehiclesPanel {
 
     }
 
-    public void disableEdit()
+    private void disableEdit()
     {
         registrationNumberField.setEditable(false);
         serialNumberField.setEditable(false);
@@ -75,7 +75,7 @@ public class VehiclesPanel {
         vehicleNumberField.setEditable(false);
     }
 
-    public void showDetails(Vehicle v)
+    private void showDetails(Vehicle v)
     {
         // vehicle
          registrationNumberField.setText(v.getRegistrationNumber());

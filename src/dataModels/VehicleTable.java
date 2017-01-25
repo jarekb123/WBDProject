@@ -9,8 +9,8 @@ import java.sql.SQLException;
  */
 public class VehicleTable extends AbstractTableModel {
 
-    String [] columnNames = {"ID", "Nazwa", "Typ", "Nr boczny"};
-    Vehicle [] data;
+    private String [] columnNames = {"ID", "Nazwa", "Typ", "Nr boczny"};
+    private Vehicle [] data;
 
     public boolean getDataFromDB(Connection c, int idPKM)
     {

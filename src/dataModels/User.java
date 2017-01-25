@@ -7,11 +7,12 @@ import java.sql.*;
  * Created by jaroslaw on 18.01.2017.
  */
 public class User {
-    int id;
-    String username;
-    int permissionsID, pkmID;
+    private int id;
+    private String username;
+    private int permissionsID;
+    private int pkmID;
 
-    public User(int id, String username,  int permissionsID, int pkmID) {
+    private User(int id, String username, int permissionsID, int pkmID) {
         this.username = username;
         this.id = id;
         this.permissionsID = permissionsID;

@@ -26,9 +26,9 @@ public class AddClientDialog extends JDialog {
     private JLabel error;
     private JTextField ticketID;
 
-    Connection c;
+    private final Connection c;
     ArrayList<String> errors;
-    int id_PKM = 1;
+    private int id_PKM = 1;
 
     public AddClientDialog(Connection c) {
         this.c = c;
@@ -169,6 +169,7 @@ public class AddClientDialog extends JDialog {
     }
 
     private void createUIComponents() {
+        //noinspection unchecked
         comboBox1 = new JComboBox(getDiscounts());
     }
 }

@@ -42,8 +42,7 @@ public class DataProvider {
             e.printStackTrace();
         }
 
-        EmployeeSimple[] toReturn = employeeList.toArray(new EmployeeSimple[employeeList.size()]);
-        return toReturn;
+        return employeeList.toArray(new EmployeeSimple[employeeList.size()]);
 
     }
 
@@ -89,10 +88,9 @@ public class DataProvider {
             ResultSet resultSet = statement.executeQuery(sql);
             resultSet.next();
 
-            String [] companyInfo = {resultSet.getString("nazwa"),resultSet.getString("kapital_zakladowy"),
+            return new String[]{resultSet.getString("nazwa"),resultSet.getString("kapital_zakladowy"),
                     resultSet.getString("miejscowosc"),resultSet.getString("kod_pocztowy"),
                     resultSet.getString("ulica"), resultSet.getString("nr_budynku"), resultSet.getString("nr_lokalu")};
-            return companyInfo;
         }
         catch (SQLException e)
         {

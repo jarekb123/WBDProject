@@ -25,7 +25,7 @@ public class CompanyInfo {
     private JLabel flatNumberData;
     private JPanel mainPanel;
 
-    DataProvider provider;
+    private DataProvider provider;
 
     public CompanyInfo(DataProvider provider)
     {

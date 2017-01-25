@@ -39,11 +39,9 @@ public class TicketMachinesPanel {
     private JRadioButton stateOFF;
     private JLabel stateLbl;
 
-    boolean tmState;
+    private boolean tmState;
 
-    private ButtonGroup stateButtonGroup;
-
-    Connection c;
+    private Connection c;
 
     public TicketMachinesPanel(Connection c) {
         this.c = c;
@@ -53,7 +51,7 @@ public class TicketMachinesPanel {
 
         tmState = false;
 
-        stateButtonGroup = new ButtonGroup();
+        ButtonGroup stateButtonGroup = new ButtonGroup();
         stateButtonGroup.add(stateON);
         stateButtonGroup.add(stateOFF);
 

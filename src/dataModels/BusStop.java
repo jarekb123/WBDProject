@@ -9,11 +9,14 @@ import java.sql.Statement;
  * Created by jaroslaw on 20.01.2017.
  */
 public class BusStop {
-    Integer id;
-    String name, city, postcode, street;
-    Integer buildingNumber;
+    private Integer id;
+    private String name;
+    private String city;
+    private String postcode;
+    private String street;
+    private Integer buildingNumber;
 
-    public BusStop(Integer id, String name, String city, String postcode, String street, Integer buildingNumber) {
+    private BusStop(Integer id, String name, String city, String postcode, String street, Integer buildingNumber) {
         this.id = id;
         this.name = name;
         this.city = city;

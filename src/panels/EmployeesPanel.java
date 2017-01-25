@@ -50,9 +50,9 @@ public class EmployeesPanel {
     private JLabel permissionsLbl;
     private JComboBox permissionsCBox;
 
-    DataProvider provider;
+    private DataProvider provider;
 
-    Integer selectedEmployeeID;
+    private Integer selectedEmployeeID;
  //   EmployeeDetailsPanel detailsPanel;
 
 
@@ -162,8 +162,7 @@ public class EmployeesPanel {
     }
 
     private void createUIComponents() {
-        // TODO: place custom component creation code here
-        permissionsCBox = new JComboBox(provider.getPermissionTypes(provider.getConnection()));
+        permissionsCBox = new JComboBox(DataProvider.getPermissionTypes(provider.getConnection()));
     }
     // Employees section
 

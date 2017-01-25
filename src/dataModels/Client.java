@@ -8,15 +8,16 @@ import java.util.Arrays;
  * Created by jaroslaw on 21.01.2017.
  */
 public class Client {
-    Integer id;
-    Integer id_ticket;
-    String firstName, lastName;
-    Date birthDate;
-    String discountName;
-    Integer discountValue;
-    String idCard;
+    private Integer id;
+    private Integer id_ticket;
+    private String firstName;
+    private String lastName;
+    private Date birthDate;
+    private String discountName;
+    private Integer discountValue;
+    private String idCard;
 
-    public Client(Integer id, Integer id_ticket, String firstName, String lastName, Date birthDate, String discountName, Integer discountValue, String idCard) {
+    private Client(Integer id, Integer id_ticket, String firstName, String lastName, Date birthDate, String discountName, Integer discountValue, String idCard) {
         this.id = id;
         this.id_ticket = id_ticket;
         this.firstName = firstName;
@@ -82,18 +83,14 @@ public class Client {
         ResultSet rs = s.executeQuery("select count(*) from uzytkownicy where nazwa_uzytkownika = '"+username+"'");
         rs.next();
         int count = rs.getInt(1);
-        if(count > 0)
-            return true;
-        return false;
+        return count > 0;
     }
     public static boolean isTicketRegistered(Connection c, int id_ticket) throws SQLException {
         Statement s = c.createStatement();
         ResultSet rs = s.executeQuery("select count(*) from karty_miejskie where id_karta_miejska = "+id_ticket);
         rs.next();
         int count = rs.getInt(1);
-        if(count > 0)
-            return true;
-        return false;
+        return count > 0;
     }
     public static boolean create(Connection c, int idPKM, String username, String password, Integer id_ticket, String firstName, String lastName, Date birthDate, int discountID, String idCard) throws SQLException {
         Savepoint svpt = c.setSavepoint("createUserSVPT");

@@ -20,8 +20,8 @@ public class AddUserDialog extends JDialog {
     private JComboBox permissionCBox;
     private JLabel permissionsLbl;
 
-    User user;
-    Connection dbConnection;
+    private User user;
+    private Connection dbConnection;
 
     public AddUserDialog(Connection c) {
         this.dbConnection = c;
